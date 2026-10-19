@@ -67,8 +67,8 @@ const CATALOGO_HOMBRE = [
         ]
     },
     {
-        id: "h-herencia",
-        nombre: "Camiseta Herencia",
+        id: "h-gestion",
+        nombre: "Camiseta Gestión",
         categoria: "Camisetas",
         precio: 35000,
         tallas: ["S", "M", "L", "XL"],

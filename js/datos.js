@@ -25,8 +25,8 @@ const CATALOGO = {
             ]
         },
         {
-            id: "h-herencia",
-            nombre: "Buzo Herencia",
+            id: "h-gestion",
+            nombre: "Buzo Gestión",
             categoria: "Buzos",
             precio: 99.99,
             tallas: ["M", "L", "XL"],
