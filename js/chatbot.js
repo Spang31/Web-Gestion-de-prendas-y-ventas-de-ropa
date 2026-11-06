@@ -4,7 +4,7 @@
  */
 
 // Usar configuración centralizada si está disponible
-const API_KEY = (typeof CHATBOT_CONFIG !== 'undefined') ? CHATBOT_CONFIG.apiKey : 'TU_API_KEY_AQUI';
+const API_KEY = (typeof CHATBOT_CONFIG !== 'undefined') ? CHATBOT_CONFIG.apiKey : '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';
 
 const SYSTEM_PROMPT = (typeof CHATBOT_CONFIG !== 'undefined') ? CHATBOT_CONFIG.systemPrompt : `Eres un asistente de IA para la tienda de ropa "Gestión de Catálogo de Ropa". Tu función es ayudar a los clientes exclusivamente con preguntas relacionadas con la tienda.`;
 
@@ -24,34 +24,58 @@ class Chatbot {
 
     async loadProductos() {
         try {
-            // Intentar cargar desde CATALOGO (estructura unificada)
-            if (typeof CATALOGO !== 'undefined') {
-                if (CATALOGO.hombre) {
-                    CATALOGO.hombre.forEach(p => {
+            // Detectar qué página estamos usando para cargar los productos correctos
+            const currentPath = window.location.pathname;
+
+            // Cargar productos según la página actual
+            if (currentPath.includes('hombre.html') || currentPath.includes('hombre')) {
+                if (typeof CATALOGO_HOMBRE !== 'undefined') {
+                    CATALOGO_HOMBRE.forEach(p => {
                         p.genero = 'hombre';
                         this.productos.push(p);
                     });
                 }
-                if (CATALOGO.mujer) {
-                    CATALOGO.mujer.forEach(p => {
+            } else if (currentPath.includes('mujer.html') || currentPath.includes('mujer')) {
+                if (typeof CATALOGO_MUJER !== 'undefined') {
+                    CATALOGO_MUJER.forEach(p => {
+                        p.genero = 'mujer';
+                        this.productos.push(p);
+                    });
+                }
+            } else {
+                // En index.html, cargar ambos
+                if (typeof CATALOGO_HOMBRE !== 'undefined') {
+                    CATALOGO_HOMBRE.forEach(p => {
+                        p.genero = 'hombre';
+                        this.productos.push(p);
+                    });
+                }
+                if (typeof CATALOGO_MUJER !== 'undefined') {
+                    CATALOGO_MUJER.forEach(p => {
                         p.genero = 'mujer';
                         this.productos.push(p);
                     });
                 }
             }
 
-            // Intentar cargar desde CATALOGO_HOMBRE y CATALOGO_MUJER (estructura separada)
-            if (typeof CATALOGO_HOMBRE !== 'undefined') {
-                CATALOGO_HOMBRE.forEach(p => {
-                    p.genero = 'hombre';
-                    this.productos.push(p);
-                });
-            }
-            if (typeof CATALOGO_MUJER !== 'undefined') {
-                CATALOGO_MUJER.forEach(p => {
-                    p.genero = 'mujer';
-                    this.productos.push(p);
-                });
+            // También intentar cargar desde CATALOGO (estructura unificada) si existe
+            if (typeof CATALOGO !== 'undefined') {
+                if (CATALOGO.hombre) {
+                    CATALOGO.hombre.forEach(p => {
+                        if (!this.productos.find(prod => prod.id === p.id)) {
+                            p.genero = 'hombre';
+                            this.productos.push(p);
+                        }
+                    });
+                }
+                if (CATALOGO.mujer) {
+                    CATALOGO.mujer.forEach(p => {
+                        if (!this.productos.find(prod => prod.id === p.id)) {
+                            p.genero = 'mujer';
+                            this.productos.push(p);
+                        }
+                    });
+                }
             }
 
             console.log('Productos cargados:', this.productos.length);
@@ -217,14 +241,6 @@ class Chatbot {
             return 'Por favor escribe una pregunta clara sobre la tienda. Puedo ayudarte con productos, tallas, envíos, devoluciones o pagos.';
         }
 
-        // Preguntas muy cortas como "y para mujer?" o "y de hombre?"
-        if (lowerMessage.includes('mujer') || lowerMessage.includes('mujeres')) {
-            scores.productos += 4; // Prioridad alta
-        }
-        if (lowerMessage.includes('hombre') || lowerMessage.includes('hombres')) {
-            scores.productos += 4; // Prioridad alta
-        }
-
         // Respuestas básicas cuando la API falla
         // Sistema de puntuación para mejor detección
         let scores = {
@@ -237,6 +253,40 @@ class Chatbot {
             ubicacion: 0,
             saludos: 0
         };
+
+        // Puntuar productos (mejorado con errores de escritura comunes)
+        if (lowerMessage.includes('producto') || lowerMessage.includes('productos') || lowerMessage.includes('prodcuto') || lowerMessage.includes('prodcutos')) scores.productos += 3;
+        if (lowerMessage.includes('prenda') || lowerMessage.includes('prendas')) scores.productos += 2;
+        if (lowerMessage.includes('ropa')) scores.productos += 2;
+        if (lowerMessage.includes('catálogo') || lowerMessage.includes('catalogo')) scores.productos += 2;
+        if (lowerMessage.includes('recomienda') || lowerMessage.includes('recomendar')) scores.productos += 3;
+        if (lowerMessage.includes('qué tienen') || lowerMessage.includes('que tienen')) scores.productos += 2;
+        if (lowerMessage.includes('tienen') || lowerMessage.includes('disponible') || lowerMessage.includes('disponibles')) scores.productos += 2;
+        if (lowerMessage.includes('qué sacos') || lowerMessage.includes('que sacos') || lowerMessage.includes('sacos')) scores.productos += 3;
+        if (lowerMessage.includes('buzo') || lowerMessage.includes('buzos')) scores.productos += 3;
+        if (lowerMessage.includes('camiseta') || lowerMessage.includes('camisetas')) scores.productos += 3;
+        if (lowerMessage.includes('crop') || lowerMessage.includes('crops')) scores.productos += 3;
+        if (lowerMessage.includes('articulo') || lowerMessage.includes('articulos') || lowerMessage.includes('artículo') || lowerMessage.includes('artículos')) scores.productos += 3;
+        if (lowerMessage.includes('vende') || lowerMessage.includes('venden') || lowerMessage.includes('vender')) scores.productos += 3;
+        if (lowerMessage.includes('ofrecen') || lowerMessage.includes('ofrece') || lowerMessage.includes('ofrecer')) scores.productos += 2;
+        if (lowerMessage.includes('herencia') || lowerMessage.includes('gestión') || lowerMessage.includes('gestion')) scores.productos += 2;
+        if (lowerMessage.includes('qué hay') || lowerMessage.includes('que hay') || lowerMessage.includes('que tienen')) scores.productos += 2;
+        if (lowerMessage.includes('inventario') || lowerMessage.includes('stock')) scores.productos += 2;
+
+        // Puntuar género (prioridad alta si se combina con productos)
+        if (lowerMessage.includes('mujer') || lowerMessage.includes('mujeres')) {
+            scores.productos += 4; // Prioridad alta
+        }
+        if (lowerMessage.includes('hombre') || lowerMessage.includes('hombres')) {
+            scores.productos += 4; // Prioridad alta
+        }
+
+        // Puntuar específicamente "que productos de X hay"
+        if (lowerMessage.includes('que') || lowerMessage.includes('qué')) {
+            if (lowerMessage.includes('productos') || lowerMessage.includes('prodcutos')) {
+                scores.productos += 5; // Máxima prioridad
+            }
+        }
 
         // Puntuar devoluciones
         if (lowerMessage.includes('devolver')) scores.devoluciones += 3;

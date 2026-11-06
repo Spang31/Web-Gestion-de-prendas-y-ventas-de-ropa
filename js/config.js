@@ -15,7 +15,7 @@ const FIREBASE_CONFIG = {
 
 // Configuración del Chatbot (Claude API)
 const CHATBOT_CONFIG = {
-  apiKey: process.env.ANTHROPIC_API_KEY || 'TU_API_KEY_AQUI',
+  apiKey: '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',
   model: 'claude-3-sonnet-20240229',
   maxTokens: 1024,
   systemPrompt: `Eres un asistente de IA para la tienda de ropa "Gestión de Catálogo de Ropa". Tu función es ayudar a los clientes exclusivamente con preguntas relacionadas con la tienda.
