@@ -31,6 +31,8 @@ function initLookbook() {
     const next = document.getElementById("nextBtn");
     const dotsWrap = document.querySelector(".lookbook-dots");
     let index = 0;
+    let autoplayInterval;
+    let isHovered = false;
 
     function maxIndex() {
         return Math.max(0, slides.length - visibleCount());
@@ -65,12 +67,38 @@ function initLookbook() {
         update();
     }
 
+    function startAutoplay() {
+        // Intervalo de 3000ms (3 segundos) - más rápido
+        autoplayInterval = setInterval(() => {
+            if (!isHovered) {
+                go(1);
+            }
+        }, 3000);
+    }
+
+    function stopAutoplay() {
+        if (autoplayInterval) {
+            clearInterval(autoplayInterval);
+        }
+    }
+
     prev?.addEventListener("click", () => go(-1));
     next?.addEventListener("click", () => go(1));
     window.addEventListener("resize", update);
     update();
 
-    setInterval(() => go(1), 5500);
+    // Iniciar autoplay
+    startAutoplay();
+
+    // Pausar autoplay cuando el cursor está encima
+    root.addEventListener("mouseenter", () => {
+        isHovered = true;
+    });
+
+    // Reanudar autoplay cuando el cursor sale
+    root.addEventListener("mouseleave", () => {
+        isHovered = false;
+    });
 
     let startX = 0;
     root.addEventListener("touchstart", (e) => {
@@ -79,6 +107,30 @@ function initLookbook() {
     root.addEventListener("touchend", (e) => {
         const dx = e.changedTouches[0].screenX - startX;
         if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+    });
+
+    // Efecto parallax al mover el mouse
+    root.addEventListener("mousemove", (e) => {
+        const rect = root.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+        slides.forEach((slide, i) => {
+            const img = slide.querySelector("img");
+            if (img) {
+                const intensity = 20;
+                img.style.transform = `translate(${x * intensity}px, ${y * intensity}px) scale(1.05)`;
+            }
+        });
+    });
+
+    root.addEventListener("mouseleave", () => {
+        slides.forEach((slide) => {
+            const img = slide.querySelector("img");
+            if (img) {
+                img.style.transform = "translate(0, 0) scale(1)";
+            }
+        });
     });
 }
 
@@ -105,8 +157,8 @@ function initCatalogo() {
 
     function pintar() {
         const lista = items.filter((p) => p.categoria === filtro);
-        grid.innerHTML = lista.map((p) => `
-            <div class="producto" role="button" tabindex="0" data-id="${p.id}">
+        grid.innerHTML = lista.map((p, index) => `
+            <div class="producto scroll-reveal" role="button" tabindex="0" data-id="${p.id}" style="animation-delay: ${index * 0.1}s">
                 <span class="tag">$${p.precio.toLocaleString('es-CO')}</span>
                 <div class="slider">
                     <button class="slider-prev" type="button" aria-label="Foto anterior">‹</button>
@@ -133,6 +185,8 @@ function initCatalogo() {
             const images = slider.querySelectorAll("img");
             if (images.length < 2) return;
             let i = 0;
+            let autoplayInterval;
+            let isHovered = false;
 
             const prevBtn = slider.querySelector(".slider-prev");
             const nextBtn = slider.querySelector(".slider-next");
@@ -146,6 +200,35 @@ function initCatalogo() {
                     dot.classList.toggle("active", idx === index);
                 });
             }
+
+            function startAutoplay() {
+                // Intervalo aleatorio entre 2000ms y 4000ms para efecto asíncrono
+                const randomInterval = Math.random() * 2000 + 2000;
+                autoplayInterval = setInterval(() => {
+                    if (!isHovered) {
+                        i = (i + 1) % images.length;
+                        showImage(i);
+                    }
+                }, randomInterval);
+            }
+
+            function stopAutoplay() {
+                if (autoplayInterval) {
+                    clearInterval(autoplayInterval);
+                }
+            }
+
+            // Iniciar autoplay asíncrono
+            startAutoplay();
+
+            // Pausar al hover
+            slider.addEventListener("mouseenter", () => {
+                isHovered = true;
+            });
+
+            slider.addEventListener("mouseleave", () => {
+                isHovered = false;
+            });
 
             prevBtn?.addEventListener("click", (e) => {
                 e.stopPropagation();
@@ -192,9 +275,17 @@ function initCatalogo() {
                     fichaTallas.querySelectorAll("span").forEach((s) => s.classList.remove("selected"));
                     span.classList.add("selected");
                     tallaSeleccionada = span.dataset.talla;
+
+                    // Animación de selección
+                    span.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        span.style.transform = 'scale(1)';
+                    }, 200);
+
                     const agregarBtn = document.getElementById("agregarCarrito");
                     if (agregarBtn) {
                         agregarBtn.disabled = false;
+                        agregarBtn.style.animation = 'pulse 0.5s ease-out';
                     }
                 });
             });
@@ -243,6 +334,12 @@ function initCatalogo() {
     agregarBtn?.addEventListener("click", () => {
         if (!fichaItem || !tallaSeleccionada) return;
         if (typeof window.agregarAlCarrito === "function") {
+            // Animación del botón
+            agregarBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                agregarBtn.style.transform = 'scale(1)';
+            }, 100);
+
             window.agregarAlCarrito(fichaItem, tallaSeleccionada);
             cerrar();
         }
@@ -258,6 +355,11 @@ function initCatalogo() {
     });
 
     pintar();
+
+    // Inicializar animaciones de scroll después de pintar
+    setTimeout(() => {
+        initScrollAnimations();
+    }, 100);
 }
 
 function initAuth() {
@@ -421,6 +523,14 @@ function initCart() {
         if (cartCount) {
             cartCount.textContent = totalItems;
             cartCount.classList.toggle("visible", totalItems > 0);
+
+            // Animación cuando cambia el contador
+            if (totalItems > 0) {
+                cartCount.style.animation = 'none';
+                setTimeout(() => {
+                    cartCount.style.animation = 'pulse 0.3s ease-out';
+                }, 10);
+            }
         }
     }
 
@@ -492,7 +602,7 @@ function initCart() {
     });
 
     cartCheckout?.addEventListener("click", () => {
-        // Función de checkout en desarrollo
+        abrirCheckout();
     });
 
     updateCartCount();
@@ -516,5 +626,108 @@ function initCart() {
         }
 
         saveCart();
+
+        // Animación de confirmación
+        if (typeof mostrarExito === 'function') {
+            mostrarExito('Producto agregado al carrito');
+        }
     };
+
+    function abrirCheckout() {
+        const checkoutModal = document.getElementById("checkoutModal");
+        if (!checkoutModal) return;
+
+        const checkoutTotal = document.getElementById("checkoutTotal");
+
+        const total = cart.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+        if (checkoutTotal) {
+            checkoutTotal.textContent = `$${total.toLocaleString('es-CO')}`;
+        }
+
+        checkoutModal.classList.add("open");
+        document.body.style.overflow = "hidden";
+    }
+
+    function cerrarCheckoutModal() {
+        const checkoutModal = document.getElementById("checkoutModal");
+        if (checkoutModal) {
+            checkoutModal.classList.remove("open");
+            document.body.style.overflow = "";
+        }
+    }
+
+    document.getElementById("cerrarCheckout")?.addEventListener("click", cerrarCheckoutModal);
+    document.getElementById("checkoutModal")?.addEventListener("click", (e) => {
+        if (e.target.id === "checkoutModal") cerrarCheckoutModal();
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") cerrarCheckoutModal();
+    });
+
+    const checkoutForm = document.getElementById("checkoutForm");
+    checkoutForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert("Función de pago en desarrollo. Próximamente se integrará con Bold.");
+    });
+
+    const cardNumberInput = document.getElementById("cardNumber");
+    cardNumberInput?.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\s/g, "").replace(/\D/g, "");
+        let formatted = value.match(/.{1,4}/g)?.join(" ") || value;
+        e.target.value = formatted;
+    });
+
+    const cardExpiryInput = document.getElementById("cardExpiry");
+    cardExpiryInput?.addEventListener("input", (e) => {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.length >= 2) {
+            value = value.slice(0, 2) + "/" + value.slice(2);
+        }
+        e.target.value = value;
+    });
 }
+
+// ======================================
+// ANIMACIONES DE SCROLL
+// ======================================
+
+function initScrollAnimations() {
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    // Observar elementos con clase scroll-reveal
+    document.querySelectorAll('.scroll-reveal').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Observar elementos con clase scroll-reveal-left
+    document.querySelectorAll('.scroll-reveal-left').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Observar elementos con clase scroll-reveal-right
+    document.querySelectorAll('.scroll-reveal-right').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Observar elementos con clase scroll-reveal-scale
+    document.querySelectorAll('.scroll-reveal-scale').forEach(el => {
+        observer.observe(el);
+    });
+}
+
+// Inicializar animaciones de scroll
+document.addEventListener("DOMContentLoaded", () => {
+    initScrollAnimations();
+});

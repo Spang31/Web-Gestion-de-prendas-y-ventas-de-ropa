@@ -1007,6 +1007,237 @@ nav a::before {
     transform: none;
 }
 
+/* Modal de Checkout */
+.checkout-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 3100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.checkout-modal.open {
+    display: flex;
+}
+
+.checkout-card {
+    background: #1a1a1a;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 640px;
+    padding: 36px 40px 40px;
+    position: relative;
+}
+
+.checkout-card,
+.checkout-card * {
+    box-sizing: border-box;
+}
+
+.cerrar-checkout {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.25s ease;
+}
+
+.cerrar-checkout:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.checkout-full {
+    text-align: left;
+}
+
+.checkout-header {
+    margin-bottom: 36px;
+}
+
+.checkout-header h1 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.02em;
+}
+
+.checkout-header p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.62);
+    margin: 0;
+    font-weight: 400;
+}
+
+.checkout-method {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+.checkout-method-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+    padding: 0 6px;
+}
+
+.checkout-method-header p {
+    font-size: 14px;
+    color: #ffffff;
+    margin: 0;
+    font-weight: 500;
+}
+
+.checkout-method-logos {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.payment-logo {
+    display: block;
+    object-fit: contain;
+}
+
+.payment-logo-visa {
+    height: 16px;
+    width: auto;
+}
+
+.payment-logo-mc {
+    height: 26px;
+    width: auto;
+}
+
+.payment-logo-amex {
+    height: 16px;
+    width: auto;
+}
+
+.checkout-form {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkout-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.checkout-field {
+    position: relative;
+}
+
+.checkout-field input {
+    width: 100%;
+    height: 54px;
+    background: transparent;
+    border: 1px solid #3a3a3a;
+    border-radius: 16px;
+    padding: 0 20px;
+    color: #ffffff;
+    font-size: 15px;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.checkout-field input::placeholder {
+    color: rgba(255, 255, 255, 0.38);
+}
+
+.checkout-field input:focus {
+    border-color: #6a6a6a;
+}
+
+.checkout-field-card input {
+    padding-left: 52px;
+}
+
+.checkout-card-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.45);
+    display: flex;
+    pointer-events: none;
+}
+
+.checkout-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.checkout-row .checkout-field {
+    min-width: 0;
+}
+
+.checkout-submit {
+    width: 100%;
+    height: 50px;
+    background: #2d2d2d;
+    color: #ffffff;
+    border: 0;
+    border-radius: 999px;
+    padding: 0 20px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    transition: 0.25s ease;
+    margin-top: 10px;
+}
+
+.checkout-submit:hover {
+    background: #3a3a3a;
+}
+
+@media (max-width: 640px) {
+    .checkout-card {
+        padding: 28px 20px 24px;
+    }
+
+    .checkout-method-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0;
+        gap: 10px;
+    }
+
+    .checkout-header h1 {
+        font-size: 22px;
+    }
+}
+
 /* Footer */
 .footer {
     background: #000;
@@ -1405,4 +1636,785 @@ nav a::before {
 
 .logout-btn {
     width: 100%;
+}
+
+/* ======================================
+   CHATBOT
+====================================== */
+
+#chatbot-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--cream);
+    color: black;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    z-index: 5000;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#chatbot-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+}
+
+#chatbot-window {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 380px;
+    max-width: calc(100vw - 60px);
+    max-height: 600px;
+    background: #0c0c0c;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+    z-index: 5000;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#chatbot-window.open {
+    display: flex;
+}
+
+.chatbot-header {
+    background: rgba(218, 217, 213, 0.1);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+}
+
+.chatbot-header span {
+    color: var(--cream);
+    font-weight: 600;
+    font-size: 16px;
+}
+
+#chatbot-close {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.25s ease;
+}
+
+#chatbot-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.chatbot-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 300px;
+    max-height: 400px;
+}
+
+.chatbot-message {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.chatbot-message.bot {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+.chatbot-message.user {
+    background: var(--cream);
+    color: black;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.chatbot-message.typing {
+    opacity: 0.7;
+    font-style: italic;
+}
+
+.typing-dots {
+    display: inline-block;
+    letter-spacing: 2px;
+    animation: typingPulse 1s ease-in-out infinite;
+}
+
+@keyframes typingPulse {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.chatbot-message.services {
+    background: rgba(218, 217, 213, 0.15);
+    border-left: 3px solid var(--cream);
+    padding: 14px 18px;
+}
+
+.chatbot-message.services strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--cream);
+}
+
+.chatbot-input-area {
+    padding: 16px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    gap: 10px;
+}
+
+#chatbot-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.25s ease;
+}
+
+#chatbot-input:focus {
+    border-color: rgba(218, 217, 213, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+#chatbot-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+#chatbot-send {
+    background: var(--cream);
+    color: black;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.25s ease;
+}
+
+#chatbot-send:hover {
+    background: white;
+}
+
+@media (max-width: 480px) {
+    #chatbot-button {
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+        font-size: 24px;
+    }
+
+    #chatbot-window {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        width: auto;
+        max-width: none;
+    }
+
+    .chatbot-message {
+        font-size: 13px;
+    }
+}
+
+/* ======================================
+   ANIMACIONES GENERALES
+====================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideLeft {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideRight {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(218, 217, 213, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(218, 217, 213, 0.6);
+    }
+}
+
+/* Clases de animación */
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+}
+
+.animate-slide-down {
+    animation: slideDown 0.6s ease-out;
+}
+
+.animate-slide-left {
+    animation: slideLeft 0.6s ease-out;
+}
+
+.animate-slide-right {
+    animation: slideRight 0.6s ease-out;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.4s ease-out;
+}
+
+.animate-pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+.animate-glow {
+    animation: glow 2s ease-in-out infinite;
+}
+
+/* ======================================
+   ANIMACIONES DE SCROLL
+====================================== */
+
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-reveal-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.scroll-reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-reveal-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.scroll-reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-reveal-scale {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.scroll-reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ======================================
+   MEJORAS EN PRODUCTOS
+====================================== */
+
+.producto {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.producto:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.producto .slider img {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.producto:hover .slider img.active {
+    transform: scale(1.12);
+}
+
+/* Animación del tag al hover */
+.producto .tag {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.producto:hover .tag {
+    transform: translateY(-5px);
+}
+
+/* ======================================
+   ANIMACIONES DE MODALES
+====================================== */
+
+.ficha.open .ficha-card {
+    animation: scaleIn 0.3s ease-out;
+}
+
+.cart-modal.open .cart-card {
+    animation: slideUp 0.4s ease-out;
+}
+
+.checkout-modal.open .checkout-card {
+    animation: scaleIn 0.3s ease-out;
+}
+
+.auth-modal.open .auth-card {
+    animation: slideDown 0.4s ease-out;
+}
+
+/* ======================================
+   ANIMACIONES DEL CHATBOT
+====================================== */
+
+#chatbot-button {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.chatbot-message {
+    animation: slideUp 0.3s ease-out;
+}
+
+.chatbot-message.typing {
+    animation: pulse 1s ease-in-out infinite;
+}
+
+#chatbot-window.open {
+    animation: scaleIn 0.3s ease-out;
+}
+
+/* ======================================
+   EFECTO PARALLAX EN LOOKBOOK
+====================================== */
+
+.lookbook-track figure {
+    transition: transform 0.1s ease-out;
+}
+
+.lookbook-track figure:hover img {
+    transform: scale(1.05);
+    transition: transform 0.6s ease;
+}
+
+/* ======================================
+   MICRO-INTERACCIONES EN BOTONES
+====================================== */
+
+.filtros button {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.filtros button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.filtros button:active::after {
+    width: 200px;
+    height: 200px;
+}
+
+.agregar-carrito,
+.cart-checkout,
+.checkout-submit,
+.google-btn,
+.auth-submit {
+    position: relative;
+    overflow: hidden;
+}
+
+.agregar-carrito::after,
+.cart-checkout::after,
+.checkout-submit::after,
+.google-btn::after,
+.auth-submit::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
+}
+
+.agregar-carrito:active::after,
+.cart-checkout:active::after,
+.checkout-submit:active::after,
+.google-btn:active::after,
+.auth-submit:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* ======================================
+   ANIMACIONES EN HEADER
+====================================== */
+
+header {
+    animation: slideDown 0.6s ease-out;
+}
+
+.menu-icon span {
+    transition: all 0.3s ease;
+}
+
+/* ======================================
+   ANIMACIONES EN COLECCIONES
+====================================== */
+
+.coleccion-card {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.coleccion-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.coleccion-card span {
+    transition: transform 0.3s ease;
+}
+
+.coleccion-card:hover span {
+    transform: translateX(10px);
+}
+
+/* ======================================
+   ANIMACIONES EN TALLAS
+====================================== */
+
+.tallas span {
+    transition: all 0.3s ease;
+}
+
+.tallas span:hover {
+    transform: scale(1.1);
+}
+
+.tallas span.selected {
+    animation: pulse 0.3s ease-out;
+}
+
+/* ======================================
+   ANIMACIONES EN NAVEGACIÓN
+====================================== */
+
+nav a {
+    transition: all 0.3s ease;
+}
+
+nav a:hover {
+    padding-left: 10px;
+    color: var(--cream);
+}
+
+.menu-pc a {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.menu-pc a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: black;
+    transition: width 0.3s ease;
+}
+
+.menu-pc a:hover::after {
+    width: 100%;
+}
+
+/* ======================================
+   ANIMACIONES EN ICONOS SOCIALES
+====================================== */
+
+.social img {
+    transition: all 0.3s ease;
+}
+
+.social img:hover {
+    transform: scale(1.2) rotate(10deg);
+}
+
+/* ======================================
+   ANIMACIONES EN FLECHAS DEL LOOKBOOK
+====================================== */
+
+.arrow {
+    transition: all 0.3s ease;
+}
+
+.arrow:hover {
+    transform: translateY(-50%) scale(1.15);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.arrow:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* ======================================
+   ANIMACIONES EN SLIDER DE PRODUCTOS
+====================================== */
+
+.slider-prev,
+.slider-next {
+    transition: all 0.3s ease;
+}
+
+.slider-prev:hover,
+.slider-next:hover {
+    transform: translateY(-50%) scale(1.1);
+    background: rgba(0, 0, 0, 0.9);
+}
+
+/* ======================================
+   ANIMACIONES EN FOOTER
+====================================== */
+
+.footer {
+    animation: slideUp 0.8s ease-out;
+}
+
+/* ======================================
+   ANIMACIONES EN SECCIÓN DE INFO
+====================================== */
+
+.herencia-info h2 {
+    animation: slideLeft 0.8s ease-out;
+}
+
+.herencia-info p {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.herencia-info p:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.herencia-info p:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* ======================================
+   ANIMACIONES EN BOTÓN CERRAR
+====================================== */
+
+.cerrar-ficha,
+.cerrar-cart,
+.cerrar-checkout,
+.cerrar-auth {
+    transition: all 0.3s ease;
+}
+
+.cerrar-ficha:hover,
+.cerrar-cart:hover,
+.cerrar-checkout:hover,
+.cerrar-auth:hover {
+    transform: rotate(90deg);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ======================================
+   ANIMACIONES EN CATEGORÍAS
+====================================== */
+
+.catalogo h1 {
+    animation: slideDown 0.6s ease-out;
+}
+
+.filtros button {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.filtros button:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.filtros button:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.filtros button:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.producto {
+    animation: scaleIn 0.5s ease-out;
+}
+
+.producto:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.producto:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.producto:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.producto:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.producto:nth-child(5) {
+    animation-delay: 0.5s;
 }

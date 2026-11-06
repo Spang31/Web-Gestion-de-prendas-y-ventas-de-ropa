@@ -1,11 +1,13 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyBWzz6D5-CCw1iFNY9Kj92gaYxdLsfcK3g",
-  authDomain: "herencia-a1ca2.firebaseapp.com",
-  projectId: "herencia-a1ca2",
-  storageBucket: "herencia-a1ca2.firebasestorage.app",
-  messagingSenderId: "885586235583",
-  appId: "1:885586235583:web:e128fdccfd7a5d6922360a"
-};
+/**
+ * Módulo de Autenticación con Firebase
+ * Gestión de Catálogo de Ropa - 4to Semestre
+ */
 
-window.firebaseApp = firebase.initializeApp(firebaseConfig);
-window.firebaseAuth = firebase.auth();
+// Cargar configuración
+if (typeof FIREBASE_CONFIG !== 'undefined') {
+  window.firebaseApp = firebase.initializeApp(FIREBASE_CONFIG);
+  window.firebaseAuth = firebase.auth();
+  console.log('Firebase inicializado correctamente');
+} else {
+  console.error('Error: FIREBASE_CONFIG no está definido. Asegúrate de cargar config.js antes de firebase.js');
+}
